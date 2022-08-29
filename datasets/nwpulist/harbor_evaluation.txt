@@ -1,0 +1,12 @@
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/632__1__41___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/799__1__0___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/667__1__0___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/643__1__148___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/581__1__0___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/623__1__0___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/620__1__65___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/643__1__0___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/669__1__0___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/669__1__50___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/632__1__0___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/evaluation/images/765__1__0___0.jpg

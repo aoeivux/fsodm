@@ -1,0 +1,10 @@
+airplane /Users/nero/Developments/python/FSODM/datasets/nwpulist/airplane_training.txt
+ship /Users/nero/Developments/python/FSODM/datasets/nwpulist/ship_training.txt
+storage-tank /Users/nero/Developments/python/FSODM/datasets/nwpulist/storage-tank_training.txt
+baseball-diamond /Users/nero/Developments/python/FSODM/datasets/nwpulist/baseball-diamond_training.txt
+tennis-court /Users/nero/Developments/python/FSODM/datasets/nwpulist/tennis-court_training.txt
+basketball-court /Users/nero/Developments/python/FSODM/datasets/nwpulist/basketball-court_training.txt
+ground-track-field /Users/nero/Developments/python/FSODM/datasets/nwpulist/ground-track-field_training.txt
+harbor /Users/nero/Developments/python/FSODM/datasets/nwpulist/harbor_training.txt
+bridge /Users/nero/Developments/python/FSODM/datasets/nwpulist/bridge_training.txt
+vehicle /Users/nero/Developments/python/FSODM/datasets/nwpulist/vehicle_training.txt

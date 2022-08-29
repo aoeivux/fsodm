@@ -1,0 +1,2 @@
+/Users/nero/Developments/python/FSODM/datasets/training/images/104__1__0___0.jpg
+/Users/nero/Developments/python/FSODM/datasets/training/images/360__1__69___0.jpg
