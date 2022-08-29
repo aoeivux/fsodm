@@ -78,6 +78,7 @@ __C.multiscale = True
 # '1' for image only, '2' for image + mask, '3' for image + mask + croped obj
 __C.metain_type = 2
 
+
 def get_ids(root):
     lines = []
     with open(root, 'r') as f:
@@ -134,7 +135,8 @@ def __configure_data(dataopt):
 
     if 'tuning' in dataopt:
         __C.tuning = bool(int(dataopt['tuning']))
-        __C.max_epoch = int(dataopt['max_epoch']) if 'max_epoch' in dataopt else 500
+        __C.max_epoch = int(dataopt['max_epoch']
+                            ) if 'max_epoch' in dataopt else 500
         __C.repeat = int(dataopt['repeat']) if 'repeat' in dataopt else 100
         if __C.max_epoch / __C.repeat <= 20:
             __C.save_interval = 1
@@ -145,7 +147,8 @@ def __configure_data(dataopt):
         else:
             __C.save_interval = 10
 
-        __C.shot = 0 if not __C.tuning else int(dataopt['meta'].split('.')[0].split('_')[-1].replace('shot', ''))
+        __C.shot = 0 if not __C.tuning else int(
+            dataopt['meta'].split('.')[0].split('_')[-1].replace('shot', ''))
 
     print('save_interval', __C.save_interval)
 
@@ -156,12 +159,15 @@ def __configure_data(dataopt):
         if dataopt['data'] in ['dota', 'nwpu', 'dior']:
             __C.base_classes = __C.classes
         else:
-            raise NotImplementedError('Data type {} not found'.format(dataopt['data']))
+            raise NotImplementedError(
+                'Data type {} not found'.format(dataopt['data']))
     else:
-        __C.base_classes = [c for c in __C.classes if c not in __C.novel_classes]
+        __C.base_classes = [
+            c for c in __C.classes if c not in __C.novel_classes]
     __C.base_ids = [__C.classes.index(c) for c in __C.base_classes]
     __C.novel_ids = [__C.classes.index(c) for c in __C.novel_classes]
-    __C._real_base_ids = [i for i in range(len(__C.classes)) if i not in __C.novel_ids]
+    __C._real_base_ids = [i for i in range(
+        len(__C.classes)) if i not in __C.novel_ids]
     print('base_ids', __C.base_ids)
     __C.num_gpus = len(dataopt['gpus'].split(','))
     __C.neg_ratio = dataopt['neg'] if 'neg' in dataopt else __C.neg_ratio
@@ -189,7 +195,8 @@ def __configure_data(dataopt):
     cfg.yolo_joint = int(dataopt['joint']) if 'joint' in dataopt else False
     if cfg.yolo_joint:
         cfg.metaids = get_ids(dataopt['meta'])
-        shot = int(dataopt['meta'].split('.')[0].split('_')[-1].replace('shot', ''))
+        shot = int(dataopt['meta'].split('.')[
+                   0].split('_')[-1].replace('shot', ''))
         __C.backup += '_joint{}'.format(shot)
 
 
@@ -248,7 +255,7 @@ __C.config_net = __configure_net
 def parse_cfg(cfgfile):
     blocks = []
     fp = open(cfgfile, 'r')
-    block =  None
+    block = None
     line = fp.readline()
     while line != '':
         line = line.rstrip()
@@ -264,7 +271,7 @@ def parse_cfg(cfgfile):
             if block['type'] == 'convolutional':
                 block['batch_normalize'] = 0
         else:
-            key,value = line.split('=')
+            key, value = line.split('=')
             key = key.strip()
             if key == 'type':
                 key = '_type'
@@ -279,13 +286,13 @@ def parse_cfg(cfgfile):
 
 
 def print_cfg(blocks):
-    print('layer     filters    size              input                output');
+    print('layer     filters    size              input                output')
     prev_width = 416
     prev_height = 416
     prev_filters = 3
-    out_filters =[]
-    out_widths =[]
-    out_heights =[]
+    out_filters = []
+    out_widths = []
+    out_heights = []
     ind = -2
     for block in blocks:
         ind = ind + 1
@@ -313,7 +320,8 @@ def print_cfg(blocks):
                 name = 'conv'
             if 'mask_in' in block and int(block['mask_in']) == 1:
                 prev_filters += 1
-            print('%5d %-6s %4d  %d x %d / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, name, filters, kernel_size, kernel_size, stride, prev_width, prev_height, prev_filters, width, height, filters))
+            print('%5d %-6s %4d  %d x %d / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, name, filters,
+                  kernel_size, kernel_size, stride, prev_width, prev_height, prev_filters, width, height, filters))
             prev_width = width
             prev_height = height
             prev_filters = filters
@@ -325,7 +333,8 @@ def print_cfg(blocks):
             stride = int(block['stride'])
             width = prev_width/stride
             height = prev_height/stride
-            print('%5d %-6s       %d x %d / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, 'max', pool_size, pool_size, stride, prev_width, prev_height, prev_filters, width, height, filters))
+            print('%5d %-6s       %d x %d / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, 'max',
+                  pool_size, pool_size, stride, prev_width, prev_height, prev_filters, width, height, filters))
             prev_width = width
             prev_height = height
             prev_filters = filters
@@ -338,7 +347,8 @@ def print_cfg(blocks):
             width = prev_width/pool_size
             height = prev_height/pool_size
             filters = prev_filters
-            print('%5d %-6s       %d x %d / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, 'glomax', pool_size, pool_size, stride, prev_width, prev_height, prev_filters, width, height, filters))
+            print('%5d %-6s       %d x %d / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, 'glomax',
+                  pool_size, pool_size, stride, prev_width, prev_height, prev_filters, width, height, filters))
             prev_width = width
             prev_height = height
             prev_filters = filters
@@ -351,7 +361,8 @@ def print_cfg(blocks):
             width = prev_width/pool_size
             height = prev_height/pool_size
             filters = prev_filters
-            print('%5d %-6s       %d x %d / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, 'gloavg', pool_size, pool_size, stride, prev_width, prev_height, prev_filters, width, height, filters))
+            print('%5d %-6s       %d x %d / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, 'gloavg',
+                  pool_size, pool_size, stride, prev_width, prev_height, prev_filters, width, height, filters))
             prev_width = width
             prev_height = height
             prev_filters = filters
@@ -361,7 +372,8 @@ def print_cfg(blocks):
         elif block['type'] == 'avgpool':
             width = 1
             height = 1
-            print('%5d %-6s                   %3d x %3d x%4d   ->  %3d' % (ind, 'avg', prev_width, prev_height, prev_filters,  prev_filters))
+            print('%5d %-6s                   %3d x %3d x%4d   ->  %3d' %
+                  (ind, 'avg', prev_width, prev_height, prev_filters,  prev_filters))
             prev_width = width
             prev_height = height
             prev_filters = filters
@@ -371,18 +383,21 @@ def print_cfg(blocks):
         elif block['type'] == 'split':
             splits = [int(sz) for sz in block['splits'].split(',')]
             filters = splits[-1]
-            print(('%5d %-6s %3d -> {}' % (ind, 'split', prev_filters)).format(splits))
+            print(('%5d %-6s %3d -> {}' %
+                  (ind, 'split', prev_filters)).format(splits))
             prev_filters = filters
             out_widths.append(prev_width)
             out_heights.append(prev_height)
             out_filters.append(prev_filters)
         elif block['type'] == 'softmax':
-            print('%5d %-6s                                    ->  %3d' % (ind, 'softmax', prev_filters))
+            print('%5d %-6s                                    ->  %3d' %
+                  (ind, 'softmax', prev_filters))
             out_widths.append(prev_width)
             out_heights.append(prev_height)
             out_filters.append(prev_filters)
         elif block['type'] == 'cost':
-            print('%5d %-6s                                     ->  %3d' % (ind, 'cost', prev_filters))
+            print('%5d %-6s                                     ->  %3d' %
+                  (ind, 'cost', prev_filters))
             out_widths.append(prev_width)
             out_heights.append(prev_height)
             out_filters.append(prev_filters)
@@ -391,7 +406,8 @@ def print_cfg(blocks):
             filters = stride * stride * prev_filters
             width = prev_width/stride
             height = prev_height/stride
-            print('%5d %-6s             / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' % (ind, 'reorg', stride, prev_width, prev_height, prev_filters, width, height, filters))
+            print('%5d %-6s             / %d   %3d x %3d x%4d   ->   %3d x %3d x%4d' %
+                  (ind, 'reorg', stride, prev_width, prev_height, prev_filters, width, height, filters))
             prev_width = width
             prev_height = height
             prev_filters = filters
@@ -410,8 +426,8 @@ def print_cfg(blocks):
                 print('%5d %-6s %d %d' % (ind, 'route', layers[0], layers[1]))
                 prev_width = out_widths[layers[0]]
                 prev_height = out_heights[layers[0]]
-                assert(prev_width == out_widths[layers[1]])
-                assert(prev_height == out_heights[layers[1]])
+                # assert(prev_width == out_widths[layers[1]])
+                # assert(prev_height == out_heights[layers[1]])
                 prev_filters = out_filters[layers[0]] + out_filters[layers[1]]
             out_widths.append(prev_width)
             out_heights.append(prev_height)
@@ -433,7 +449,8 @@ def print_cfg(blocks):
             out_filters.append(prev_filters)
         elif block['type'] == 'connected':
             filters = int(block['output'])
-            print('%5d %-6s                            %d  ->  %3d' % (ind, 'connected', prev_filters,  filters))
+            print('%5d %-6s                            %d  ->  %3d' %
+                  (ind, 'connected', prev_filters,  filters))
             prev_filters = filters
             out_widths.append(1)
             out_heights.append(1)
@@ -448,7 +465,8 @@ def print_cfg(blocks):
                 prev_filters = outshape[0]
             outshape[0] = prev_filters
 
-            print('%5d %-6s  %s  ->  %s' % (ind, 'reshape', inshape,  outshape))
+            print('%5d %-6s  %s  ->  %s' %
+                  (ind, 'reshape', inshape,  outshape))
             if len(outshape) == 1:
                 out_widths.append(1)
                 out_heights.append(1)
@@ -463,7 +481,7 @@ def print_cfg(blocks):
             width = prev_width * stride
             height = prev_height * stride
             print('%5d %-6s         %d         %3d x %3d x%4d   ->   %3d x %3d x%4d' % (
-            ind, 'up', stride, prev_width, prev_height, prev_filters, width, height, filters))
+                ind, 'up', stride, prev_width, prev_height, prev_filters, width, height, filters))
             prev_width = width
             prev_height = height
             prev_filters = filters
@@ -478,8 +496,10 @@ def load_conv(buf, start, conv_model):
     num_w = conv_model.weight.numel()
     if conv_model.bias is not None:
         num_b = conv_model.bias.numel()
-        conv_model.bias.data.copy_(torch.from_numpy(buf[start:start+num_b]));   start = start + num_b
-    conv_model.weight.data.copy_(torch.from_numpy(buf[start:start+num_w])); start = start + num_w
+        conv_model.bias.data.copy_(torch.from_numpy(buf[start:start+num_b]))
+        start = start + num_b
+    conv_model.weight.data.copy_(torch.from_numpy(buf[start:start+num_w]))
+    start = start + num_w
     return start
 
 
@@ -495,10 +515,12 @@ def load_convfromcoco(buf, start, conv_model):
     allinds = np.concatenate([inds + i * 85 for i in range(5)])
     if conv_model.bias is not None:
         num_b = tmpb.numel()
-        tmpb.copy_(torch.from_numpy(buf[start:start+num_b])); start = start + num_b
-        conv_model.bias.data.copy_(tmpb[allinds]);
-    tmpw.copy_(torch.from_numpy(buf[start:start+num_w])); start = start + num_w
-    conv_model.weight.data.copy_(tmpw[allinds]);
+        tmpb.copy_(torch.from_numpy(buf[start:start+num_b]))
+        start = start + num_b
+        conv_model.bias.data.copy_(tmpb[allinds])
+    tmpw.copy_(torch.from_numpy(buf[start:start+num_w]))
+    start = start + num_w
+    conv_model.weight.data.copy_(tmpw[allinds])
     return start
 
 
@@ -516,11 +538,16 @@ def save_conv(fp, conv_model):
 def load_conv_bn(buf, start, conv_model, bn_model):
     num_w = conv_model.weight.numel()
     num_b = bn_model.bias.numel()
-    bn_model.bias.data.copy_(torch.from_numpy(buf[start:start+num_b]));     start = start + num_b
-    bn_model.weight.data.copy_(torch.from_numpy(buf[start:start+num_b]));   start = start + num_b
-    bn_model.running_mean.copy_(torch.from_numpy(buf[start:start+num_b]));  start = start + num_b
-    bn_model.running_var.copy_(torch.from_numpy(buf[start:start+num_b]));   start = start + num_b
-    conv_model.weight.data.copy_(torch.from_numpy(buf[start:start+num_w])); start = start + num_w
+    bn_model.bias.data.copy_(torch.from_numpy(buf[start:start+num_b]))
+    start = start + num_b
+    bn_model.weight.data.copy_(torch.from_numpy(buf[start:start+num_b]))
+    start = start + num_b
+    bn_model.running_mean.copy_(torch.from_numpy(buf[start:start+num_b]))
+    start = start + num_b
+    bn_model.running_var.copy_(torch.from_numpy(buf[start:start+num_b]))
+    start = start + num_b
+    conv_model.weight.data.copy_(torch.from_numpy(buf[start:start+num_w]))
+    start = start + num_w
     return start
 
 
@@ -542,8 +569,10 @@ def save_conv_bn(fp, conv_model, bn_model):
 def load_fc(buf, start, fc_model):
     num_w = fc_model.weight.numel()
     num_b = fc_model.bias.numel()
-    fc_model.bias.data.copy_(torch.from_numpy(buf[start:start+num_b]));     start = start + num_b
-    fc_model.weight.data.copy_(torch.from_numpy(buf[start:start+num_w]));   start = start + num_w
+    fc_model.bias.data.copy_(torch.from_numpy(buf[start:start+num_b]))
+    start = start + num_b
+    fc_model.weight.data.copy_(torch.from_numpy(buf[start:start+num_w]))
+    start = start + num_w
     return start
 
 
